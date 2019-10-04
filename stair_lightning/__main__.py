@@ -11,13 +11,17 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     logger = logging.getLogger(__name__)
-    settings = StairConfig('/data/stair_settings.json')
+
     setup_logging()
     logging_sample()
+    config = StairConfig('/data/stair_settings.json')
+    settings = config.settings
     gpio_list = [17, 27, 22, 5, 6, 13, 19, 26, 18, 23, 24, 25, 12, 16, 20, 21]
-    for gpio in gpio_list:
+    for stair in settings.stairs:
+        gpio = stair.gpio
+        number = stair.number
         g = OutputGPIO(gpio=gpio, logic=False)
-        print("Current: ", gpio)
+        print("Current: ", gpio, "Stair: ", number)
         time.sleep(1)
         g.on()
         print(gpio, "on")

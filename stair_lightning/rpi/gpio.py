@@ -1,8 +1,9 @@
 import RPi.GPIO as GPIO
 
 class OutputGPIO:
-    def __init__(self, gpio:int, logic:bool=True):
+    def __init__(self, gpio:int, logic:bool=True, initial:bool=False):
         self.logic = GPIO.HIGH if logic else GPIO.LOW
+        self.initial = initial
         self.gpio = gpio
         self._setup = False
     
