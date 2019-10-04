@@ -31,8 +31,8 @@ if __name__ == '__main__':
         print(gpio, "off")
         stair_light.off()
         
-    first_ultrasound_sensor = UltrasoundDistanceReader(trigger_gpio=8, echo_gpio=7)
-    second_ultrasound_sensor = UltrasoundDistanceReader(trigger_gpio=14, echo_gpio=15)
+    first_ultrasound_sensor = UltrasonicDistanceReader(trigger_gpio=8, echo_gpio=7)
+    second_ultrasound_sensor = UltrasonicDistanceReader(trigger_gpio=14, echo_gpio=15)
 
     try:
         while True:
