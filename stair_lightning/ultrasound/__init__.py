@@ -9,7 +9,7 @@ class UltrasoundDistanceReader:
         GPIO.setup(trigger_gpio, GPIO.OUT)
         GPIO.setup(echo_gpio, GPIO.IN)
     
-    def distance():
+    def distance(self):
         # set Trigger High
         GPIO.output(self.trigger_gpio, True)
         
