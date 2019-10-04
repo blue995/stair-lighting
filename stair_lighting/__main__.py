@@ -3,7 +3,7 @@ import time
 import logging
 from stair_lighting.logging import setup_logging
 from stair_lighting.logging import logging_sample
-from stair_lighting.sensors import UltrasoundDistanceReader
+from stair_lighting.sensors import UltrasonicDistanceReader
 from stair_lighting.rpi import OutputGPIO
 from stair_lighting.config import StairConfig
 
