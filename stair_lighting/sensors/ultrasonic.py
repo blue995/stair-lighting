@@ -1,9 +1,9 @@
 import time
 
-from stair_lightning.rpi import OutputGPIO, InputGPIO
+from stair_lighting.rpi import OutputGPIO, InputGPIO
 
 
-class UltrasoundDistanceReader:
+class UltrasonicDistanceReader:
     def __init__(self, trigger_gpio:int, echo_gpio:int):
         self.trigger = OutputGPIO(trigger_gpio)
         self.echo = InputGPIO(echo_gpio)
