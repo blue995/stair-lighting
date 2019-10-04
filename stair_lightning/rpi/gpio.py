@@ -3,14 +3,14 @@ import RPi.GPIO as GPIO
 class OutputGPIO:
     def __init__(self, gpio:int, logic:bool=True, initial:bool=False):
         self.logic = GPIO.HIGH if logic else GPIO.LOW
-        self.initial = initial
+        self.initial = GPIO.HIGH if initial else GPIO.LOW
         self.gpio = gpio
         self._setup = False
     
     def setup(self):
         if (self._setup):
             return
-        GPIO.setup(self.gpio, GPIO.OUT)
+        GPIO.setup(self.gpio, GPIO.OUT, initial=self.initial)
         self._setup = True
     
     def cleanup(self):
