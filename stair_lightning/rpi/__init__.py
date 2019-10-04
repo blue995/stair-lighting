@@ -1,1 +1,1 @@
-from .gpio import OutputGPIO
+from .gpio import OutputGPIO, InputGPIO
