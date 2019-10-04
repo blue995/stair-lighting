@@ -13,12 +13,17 @@ if __name__ == '__main__':
 
     setup_logging()
     logging_sample()
-    g = OutputGPIO(gpio=17, logic=False)
-    g.on()
-    print("on")
-    time.sleep(5)
-    print("off")
-    g.off()
+    gpio_list = [17, 27, 22, 5, 6, 13, 19, 26, 18, 23, 24, 25, 12, 16, 20, 23]
+    for gpio in gpio_list:
+        g = OutputGPIO(gpio=gpio, logic=False)
+        print("Current: ", gpio)
+        time.sleep(1)
+        g.on()
+        print(gpio, "on")
+        time.sleep(2)
+        print(gpio, "off")
+        g.off()
+        
     first_ultrasound_sensor = UltrasoundDistanceReader(trigger_gpio=8, echo_gpio=7)
     second_ultrasound_sensor = UltrasoundDistanceReader(trigger_gpio=14, echo_gpio=15)
 
