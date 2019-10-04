@@ -1,0 +1,55 @@
+# base-image for python on any machine using a template variable,
+# see more about dockerfile templates here:http://docs.resin.io/pages/deployment/docker-templates
+FROM resin/%%RESIN_MACHINE_NAME%%-python:3
+
+# use apt-get if you need to install dependencies,
+# for instance if you need ALSA sound utils, just uncomment the lines below.
+# RUN apt-get update && apt-get install -yq \
+#    alsa-utils libasound2-dev && \
+#    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+#RUN apt-get update && apt-get install -yq \
+#    python3-gpiozero python-gpiozero python-rpi.gpio python-spidev python3-rpi.gpio python3-spidev
+
+# Install necessary ssl certificates and i2c dependencies
+RUN apt-get update \
+    && curl https://letsencrypt.org/certs/isrgrootx1.pem.txt -o /usr/local/share/ca-certificates/isrgrootx1.crt \
+    && curl https://letsencrypt.org/certs/letsencryptauthorityx1.pem.txt -o /usr/local/share/ca-certificates/letsencryptauthorityx1.crt \
+    && curl https://letsencrypt.org/certs/letsencryptauthorityx2.pem.txt -o /usr/local/share/ca-certificates/letsencryptauthorityx2.crt \
+    && curl https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem.txt -o /usr/local/share/ca-certificates/letsencryptx1.crt \
+    && curl https://letsencrypt.org/certs/lets-encrypt-x2-cross-signed.pem.txt -o /usr/local/share/ca-certificates/letsencryptx2.crt \
+    && curl https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt -o /usr/local/share/ca-certificates/letsencryptx3.crt \
+    && curl https://letsencrypt.org/certs/lets-encrypt-x4-cross-signed.pem.txt -o /usr/local/share/ca-certificates/letsencryptx4.crt \
+    && update-ca-certificates \
+    && apt-get install i2c-tools
+
+# Install C library pigpio
+RUN wget abyz.me.uk/rpi/pigpio/pigpio.tar \
+    && tar xf pigpio.tar \
+    && cd PIGPIO \
+    && make \
+    && make install
+
+
+# Set our working directory
+WORKDIR /usr/src/app
+
+# Copy requirements.txt first for better cache on later pushes
+COPY ./requirements.txt /requirements.txt
+
+# pip install python deps from requirements.txt on the resin.io build server
+RUN pip install --upgrade pip setuptools && pip install -r /requirements.txt
+
+#RUN apt-get update && apt-get install -y python3-serial
+
+# This will copy all files in our root to the working  directory in the container
+COPY . ./
+
+# Compile c library
+RUN gcc -Wall -pthread -o /usr/local/bin/read_gpio c_lib/read_gpio.c -lpigpio -lrt
+
+# switch on systemd init system in container
+ENV INITSYSTEM on
+
+COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
