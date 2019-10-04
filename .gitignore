@@ -9,3 +9,5 @@ logs/
 htmlcov/
 .vscode/
 .pytest_cache/
+
+stair_settings.json

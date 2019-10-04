@@ -5,15 +5,16 @@ from stair_lightning.logging import setup_logging
 from stair_lightning.logging import logging_sample
 from stair_lightning.sensors import UltrasoundDistanceReader
 from stair_lightning.rpi import OutputGPIO
+from stair_lightning.config import StairConfig
 
 if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     logger = logging.getLogger(__name__)
-
+    settings = StairConfig('/data/stair_settings.json')
     setup_logging()
     logging_sample()
-    gpio_list = [17, 27, 22, 5, 6, 13, 19, 26, 18, 23, 24, 25, 12, 16, 20, 23]
+    gpio_list = [17, 27, 22, 5, 6, 13, 19, 26, 18, 23, 24, 25, 12, 16, 20, 21]
     for gpio in gpio_list:
         g = OutputGPIO(gpio=gpio, logic=False)
         print("Current: ", gpio)
