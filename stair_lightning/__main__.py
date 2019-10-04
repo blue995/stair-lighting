@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-
+import time 
 from stair_lightning.logging import setup_logging
 from stair_lightning.logging import logging_sample
 from stair_lightning.ultrasound import UltrasoundDistanceReader
