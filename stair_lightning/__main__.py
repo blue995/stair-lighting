@@ -1,12 +1,14 @@
 import RPi.GPIO as GPIO
-import time 
+import time
+import logging
 from stair_lightning.logging import setup_logging
 from stair_lightning.logging import logging_sample
-from stair_lightning.ultrasound import UltrasoundDistanceReader
+from stair_lightning.sensors import UltrasoundDistanceReader
 
 if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
+    logger = logging.getLogger(__name__)
 
     setup_logging()
     logging_sample()
@@ -16,7 +18,7 @@ if __name__ == '__main__':
     try:
         while True:
             dist = first_ultrasound_sensor.distance()
-            print ("Entfernung = %.1f cm" % dist)
-            time.sleep(0.01)
+            logger.info ("Entfernung = %.1f cm" % dist)
+            time.sleep(0.5)
     except KeyboardInterrupt:          # trap a CTRL+C keyboard interrupt  
         GPIO.cleanup()                 # resets all GPIO ports used by this program 
