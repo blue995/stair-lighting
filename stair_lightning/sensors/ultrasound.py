@@ -1,21 +1,22 @@
 import RPi.GPIO as GPIO
 import time
 
+from stair_lightning.rpi import OutputGPIO
+
 
 class UltrasoundDistanceReader:
-    def __init__(self, trigger_gpio, echo_gpio):
-        self.trigger_gpio = trigger_gpio
+    def __init__(self, trigger_gpio:int, echo_gpio):
+        self.trigger = OutputGPIO(trigger_gpio)
         self.echo_gpio = echo_gpio
-        GPIO.setup(trigger_gpio, GPIO.OUT)
         GPIO.setup(echo_gpio, GPIO.IN)
     
     def distance(self):
         # set Trigger High
-        GPIO.output(self.trigger_gpio, True)
+        self.trigger.on()
         
         # set Trigger after 0.1ms low
         time.sleep(0.00001)
-        GPIO.output(self.trigger_gpio, False)
+        self.trigger.off()
     
         start_time = time.time()
         end_time = time.time()
